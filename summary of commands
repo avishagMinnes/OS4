@@ -1,0 +1,27 @@
+# Code Coverage with gcov and lcov
+g++ -o eulerian_circuit eulerian_circuit.cpp -fprofile-arcs -ftest-coverage
+./eulerian_circuit -v 5 -e 10 -s 42
+gcov eulerian_circuit.cpp
+sudo apt-get install lcov
+lcov --capture --directory . --output-file coverage.info
+genhtml coverage.info --output-directory out
+xdg-open out/index.html
+
+# Profiling with gprof
+g++ -o eulerian_circuit eulerian_circuit.cpp -pg
+./eulerian_circuit -v 5 -e 10 -s 42
+gprof eulerian_circuit gmon.out > gprof_report.txt
+
+# Memory Checking with Valgrind/memcheck
+g++ -o eulerian_circuit eulerian_circuit.cpp
+valgrind --leak-check=full --show-leak-kinds=all ./eulerian_circuit -v 5 -e 10 -s 42
+
+# Call Graph with Valgrind/callgrind
+g++ -o eulerian_circuit eulerian_circuit.cpp
+valgrind --tool=callgrind ./eulerian_circuit -v 5 -e 10 -s 42
+callgrind_annotate callgrind.out.*
+kcachegrind callgrind.out.*
+
+
+
+file:///home/avishag/Downloads/OS4/out/index.html
